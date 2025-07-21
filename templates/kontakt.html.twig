@@ -1,0 +1,49 @@
+<html>
+<head>
+    <title>Kontakt</title>
+</head>
+
+<body>
+
+<h1>Dodaj do sekcji "kontakt"</h1>
+
+<form method="post" action="{{ path('kontakt') }}">
+
+    <br><label for="numerTel">Numer telefonu</label>
+    <br><input name="numerTel" type="number" required>
+
+    <br><label for="email">Email</label>
+    <br><input name="email" type="email" required>
+
+    <br><label for="adres">Adres</label>
+    <br><input name="adres" type="text" required>
+
+    <br><button type="submit">Dodaj</button>
+
+
+    <br>
+    <br>
+    <h1>Zmień dane w sekcji "kontakt"</h1>
+
+    <label for="id">ID kontaktu do edycji:</label>
+    <br><input type="number" name="id" value="{{ kontakt.id|default('') }}" required>
+
+    <br><label for="numerTel">Numer telefonu</label>
+    <br><input name="numerTel" type="number" value="{{ kontakt.numerTel|default('') }}" required>
+
+    <br><label for="email">Email</label>
+    <br><input name="email" type="email"  value="{{ kontakt.email|default('') }}" required>
+
+    <br><label for="adres">Adres</label>
+    <br><input name="adres" type="text" value="{{ kontakt.adres|default('') }}" required>
+
+
+
+    <br><button type="submit">Zmień</button>
+    <br><button type="button" ><a href="{{ path('list') }}"> Wróć</a></button>
+
+
+
+</form>
+</body>
+</html>
