@@ -29,28 +29,36 @@ class KontaktController extends AbstractController
 
         }
 
-        return $this->render('kontakt.html.twig', [
+        return $this->render('kontakt/kontakt.html.twig', [
             'error' => $error,
         ]);
     }
 
-    public function update(Request $request, EntityManagerInterface $manager): Response
+    #[Route('/kontakt/update/{id}', name: 'kontakt_update')]
+    public function update(Request $request, EntityManagerInterface $manager, $id): Response
     {
-        $error = null;
-
-        $id = $request->request->get('id');
         $kontakt = $manager->getRepository(Kontakt::class)->find($id);
+        if (!$kontakt) {
+            throw $this->createNotFoundException("Kontakt o ID $id nie istnieje.");
+        }
 
-        $kontakt->setNumerTel($request->get('numerTel'));
-        $kontakt->setEmail($request->get('email'));
-        $kontakt->setAdres($request->get('adres'));
+        if ($request->isMethod('POST')) {
+            $kontakt->setNumerTel($request->request->get('numerTel'));
+            $kontakt->setEmail($request->request->get('email'));
+            $kontakt->setAdres($request->request->get('adres'));
 
-        $manager->persist($kontakt);
-        $manager->flush();
+            $manager->persist($kontakt);
+            $manager->flush();
+        }
 
-        return $this->render('kontakt.html.twig', [
-            'error' => $error,
-            'kontakt' => null
+        return $this->render('kontakt/kontaktUpdate.html.twig', [
+            'kontakt' => $kontakt,
         ]);
+    }
+
+    #[Route('/kontakt_list', name: 'kontakt_option')]
+    public function option(): Response
+    {
+        return $this->render('kontakt/optionKontakt.html.twig', []);
     }
 }

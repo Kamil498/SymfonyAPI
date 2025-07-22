@@ -26,8 +26,14 @@ class OfertaController extends AbstractController
             $manager->flush();
         }
 
-        return $this->render('oferta.html.twig', [
+        return $this->render('oferta/oferta.html.twig', [
             'error' => $error,
         ]);
+    }
+
+    #[Route('/oferta_option', name: 'oferta_option')]
+    public function ofertaOption(): Response
+    {
+        return $this->render('oferta/optionOferta.html.twig', []);
     }
 }

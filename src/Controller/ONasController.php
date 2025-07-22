@@ -31,8 +31,14 @@ class ONasController extends AbstractController
        }
 
 
-        return $this->render('onas.html.twig', [
+        return $this->render('onas/onas.html.twig', [
             'error' => $error
         ]);
+    }
+
+    #[Route('/onas_option', name: 'onas_option')]
+    public function option(): Response
+    {
+        return $this->render('onas/optionOnas.html.twig', []);
     }
 }

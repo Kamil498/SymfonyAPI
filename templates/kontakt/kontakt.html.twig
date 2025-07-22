@@ -1,0 +1,26 @@
+<html>
+<head>
+    <title>Kontakt</title>
+</head>
+
+<body>
+
+<h1>Dodaj do sekcji "kontakt"</h1>
+
+<form method="post" action="{{ path('kontakt') }}">
+
+    <br><label for="numerTel">Numer telefonu</label>
+    <br><input name="numerTel" type="number" required>
+
+    <br><label for="email">Email</label>
+    <br><input name="email" type="email" required>
+
+    <br><label for="adres">Adres</label>
+    <br><input name="adres" type="text" required>
+
+    <br><button type="submit">Dodaj</button>
+    <br><button type="button" ><a href="{{ path('list') }}"> Wróć</a></button>
+
+</form>
+</body>
+</html>

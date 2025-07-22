@@ -14,7 +14,7 @@ class MainController extends AbstractController
 
 
 
-    #[Route('/main', name: 'Main')]
+    #[Route('/main', name: 'main')]
     public function main(EntityManagerInterface $manager, Request $request): Response
     {
         $error = null;
@@ -37,25 +37,28 @@ class MainController extends AbstractController
                 $logoName = uniqid() . '.' . $logoFile->guessExtension();
                 $logoFile->move($upload, $logoName);
                 $main->setLogo($logoName);
-            } else {
-                $main->setLogo('pianki.jpg');
             }
+
 
             $tloFile = $request->files->get('tlo');
             if ($tloFile) {
                 $tloName = uniqid() . '.' . $tloFile->guessExtension();
                 $tloFile->move($upload, $tloName);
                 $main->setTlo($tloName);
-            } else {
-                $main->setTlo('dom.jpg');
             }
 
             $manager->persist($main);
             $manager->flush();
 
         }
-        return $this->render('main.html.twig', [
+        return $this->render('main/main.html.twig', [
             'error' => $error,
         ]);
+    }
+
+    #[Route('/main_option', name: 'main_option')]
+    public function option(): Response
+    {
+        return $this->render('main/optionMain.html.twig', []);
     }
 }
