@@ -1,10 +1,24 @@
-<html>
-<head>
-    <title>Kontakt</title>
-</head>
+{% extends 'base.html.twig' %}
 
-<body>
+{% block title %}Main{% endblock %}
+
+
+{% block body %}
+<a href="{{ path('list') }}">Wróć do strony głównej</a>
+<br>
 <a href="{{ path('main') }}">Dodaj</a>
 
-</body>
-</html>
+<h2>Lista</h2>
+
+<ul class="list-group">
+
+    {% for main in main %}
+        <li class="list-group-item">
+            {{ main.dziedzinaOne }}
+            <a href="{{ path('main_update', {'id': main.id}) }}">Zmień</a>
+        </li>
+
+    {% endfor %}
+</ul>
+
+{% endblock %}

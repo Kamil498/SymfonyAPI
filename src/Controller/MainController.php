@@ -56,9 +56,54 @@ class MainController extends AbstractController
         ]);
     }
 
-    #[Route('/main_option', name: 'main_option')]
-    public function option(): Response
+    #[Route('/main/update/{id}', name: 'main_update')]
+    public function updateMain(EntityManagerInterface $manager, Request $request, $id): Response
     {
-        return $this->render('main/optionMain.html.twig', []);
+        $main = $manager->getRepository(Main::class)->find($id);
+
+        if (!$main) {
+            throw $this->createNotFoundException("Main o ID $id nie istnieje.");
+        }
+
+        if ($request->isMethod('POST')) {
+            $main->setDziedzinaOne($request->request->get('dziedzina_one'));
+            $main->setDziedzinaTwo($request->request->get('dziedzina_two'));
+            $main->setWojewodztwo($request->request->get('wojewodztwo'));
+
+            $upload = $this->getParameter('kernel.project_dir').'/public/uploads';
+
+            $logoFile = $request->files->get('logo');
+            if ($logoFile) {
+                $logoName = uniqid() . '.' . $logoFile->guessExtension();
+                $logoFile->move($upload, $logoName);
+                $main->setLogo($logoName);
+            }
+
+            $tloFile = $request->files->get('tlo');
+            if ($tloFile) {
+                $tloName = uniqid() . '.' . $tloFile->guessExtension();
+                $tloFile->move($upload, $tloName);
+                $main->setTlo($tloName);
+            }
+
+            $manager->persist($main);
+            $manager->flush();
+        }
+
+        return $this->render('main/mainUpdate.html.twig', [
+            'main' => $main,
+        ]);
     }
+
+
+    #[Route('/main_option', name: 'main_option')]
+    public function option(EntityManagerInterface $manager): Response
+    {
+        $main = $manager->getRepository(Main::class)->findAll();
+
+        return $this->render('main/optionMain.html.twig', [
+            'main' => $main,
+        ]);
+    }
+
 }

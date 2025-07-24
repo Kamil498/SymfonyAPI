@@ -1,23 +1,36 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Zmień kontakt</title>
-</head>
-<body>
-<h1>Zmień dane w sekcji "kontakt" (ID: {{ kontakt.id }})</h1>
+{% extends 'base.html.twig' %}
 
-<form method="post" action="{{ path('kontakt_update', {'id': kontakt.id}) }}">
-    <br><label for="numerTel">Numer telefonu</label>
-    <br><input name="numerTel" type="number" value="{{ kontakt.numerTel|default('') }}" required>
+    {% block title %}Edycja kontaktu{% endblock %}
 
-    <br><label for="email">Email</label>
-    <br><input name="email" type="email"  value="{{ kontakt.email|default('') }}" required>
+{% block body %}
 
-    <br><label for="adres">Adres</label>
-    <br><input name="adres" type="text" value="{{ kontakt.adres|default('') }}" required>
+<main class="container">
+    <h1 class="mb-4 text-center fw-bold">Zmień dane w sekcji "kontakt"</h1>
 
-    <br><button type="submit">Zmień</button>
-    <br><button type="button"><a href="{{ path('kontakt_option') }}">Wróć</a></button>
-</form>
-</body>
-</html>
+    <form method="post" action="{{ path('kontakt_update', {'id': kontakt.id}) }}">
+        <div class="mb-3">
+            <label for="numerTel" class="form-label">Numer telefonu</label>
+            <input name="numerTel" type="number" class="form-control" id="numerTel" required value="{{ kontakt.numerTel }}">
+        </div>
+
+        <div class="mb-3">
+            <label for="email" class="form-label">Email</label>
+            <input name="email" type="email" class="form-control" id="email" required value="{{ kontakt.email }}">
+        </div>
+
+        <div class="mb-4">
+            <label for="adres" class="form-label">Adres</label>
+            <input name="adres" type="text" class="form-control" id="adres" required value="{{ kontakt.adres }}">
+        </div>
+
+        <button type="submit" class="btn btn-primary w-100">Zmień</button>
+    </form>
+
+    <p class="mt-3 text-center">
+        <a href="{{ path('kontakt_option') }}" class="btn btn-secondary">Wróć do listy kontaktów</a>
+        <a href="{{ path('list') }}" class="btn btn-secondary">Wróć do strony głównej</a>
+    </p>
+</main>
+
+{% endblock %}
+

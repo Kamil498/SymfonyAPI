@@ -1,26 +1,35 @@
-<html>
-<head>
-    <title>Kontakt</title>
-</head>
+{% extends 'base.html.twig' %}
 
-<body>
+{% block title %}Dodaj kontakt{% endblock %}
 
-<h1>Dodaj do sekcji "kontakt"</h1>
+{% block body %}
+    <main class="container py-4">
+        <h1 class="mb-4 text-center fw-bold">Dodaj do sekcji kontakt</h1>
 
-<form method="post" action="{{ path('kontakt') }}">
+        <form method="post" action="{{ path('kontakt') }}">
+            <div class="mb-3">
+                <label for="numerTel" class="form-label">Numer telefonu</label>
+                <input name="numerTel" type="number" class="form-control" id="numerTel" placeholder="123456789" required />
+            </div>
 
-    <br><label for="numerTel">Numer telefonu</label>
-    <br><input name="numerTel" type="number" required>
+            <div class="mb-3">
+                <label for="email" class="form-label">Email</label>
+                <input name="email" type="email" class="form-control" id="email" placeholder="example@mail.com" required />
+            </div>
 
-    <br><label for="email">Email</label>
-    <br><input name="email" type="email" required>
+            <div class="mb-4">
+                <label for="adres" class="form-label">Adres</label>
+                <input name="adres" type="text" class="form-control" id="adres" placeholder="Ul. Przykładowa 10, Miasto" required />
+            </div>
 
-    <br><label for="adres">Adres</label>
-    <br><input name="adres" type="text" required>
+                <button type="submit" class="btn btn-primary w-100">Dodaj</button>
 
-    <br><button type="submit">Dodaj</button>
-    <br><button type="button" ><a href="{{ path('list') }}"> Wróć</a></button>
+        </form>
 
-</form>
-</body>
-</html>
+        <p class="mt-3 text-center">
+            <a href="{{ path('kontakt_option') }}" class="btn btn-secondary">Wróć do listy kontaktów</a>
+            <a href="{{ path('list') }}" class="btn btn-secondary">Wróć do strony głównej</a>
+        </p>
+    </main>
+{% endblock %}
+

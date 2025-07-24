@@ -1,62 +1,8 @@
-<!DOCTYPE html>
-<html lang="pl">
-<head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Zlecenie</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous" />
-    <style>
-        html, body {
-            height: 100%;
-            margin: 0;
-        }
+{% extends 'base.html.twig' %}
 
-        body {
-            display: flex;
-            flex-direction: column;
-            min-height: 100vh;
-        }
+{% block title %}Zlecenie{% endblock %}
 
-        main.container {
-            flex-grow: 1;
-        }
-
-        footer.footer {
-            background-color: #000;
-            color: #fff;
-            padding: 2rem 1rem;
-            font-size: 0.95rem;
-            line-height: 1.5;
-            text-align: center;
-        }
-
-        footer.footer a {
-            color: #0d6efd;
-            text-decoration: none;
-            margin: 0 0.3rem;
-        }
-
-        footer.footer a:hover,
-        footer.footer a:focus {
-            text-decoration: underline;
-            color: #66b0ff;
-        }
-
-        footer.footer .contact-info a {
-            display: inline-block;
-            margin: 0 0.5rem;
-        }
-
-        footer.footer .location {
-            margin: 0.5rem 0;
-        }
-
-        footer.footer .links {
-            margin: 1rem 0;
-        }
-    </style>
-</head>
-<body class="bg-light">
+{% block body  %}
 
 <main class="container py-4" style="max-width: 600px;">
     <h1 class="mb-4 text-center fw-bold">Zlecenie</h1>
@@ -89,27 +35,6 @@
     </form>
 </main>
 
-<footer class="footer">
-    <p><strong>Tworzymy strony, które rozwiną Twój biznes</strong></p>
+{% endblock %}
 
-    <p class="contact-info">
-        <a href="tel:+48782120445">782 120 445</a> |
-        <a href="mailto:kontakt@gpusolutions.pl">kontakt@gpusolutions.pl</a>
-    </p>
 
-    <p class="location">Łańcut/Rzeszów</p>
-
-    <p class="links">
-        <a href="https://www.gpusolutions.pl/#features" target="_blank" rel="noopener noreferrer">Usługi</a> |
-        <a href="https://www.gpusolutions.pl/#about" target="_blank" rel="noopener noreferrer">O nas</a> |
-        <a href="https://www.gpusolutions.pl/#contact" target="_blank" rel="noopener noreferrer">Kontakt</a>
-    </p>
-
-    <p>© 2025 GPU Solutions</p>
-
-</footer>
-
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
-
-</body>
-</html>

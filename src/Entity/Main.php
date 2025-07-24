@@ -38,7 +38,7 @@ class Main
         return $this->dziedzina_one;
     }
 
-    public function setDziedzinaOne(string $dziedzina_one): static
+    public function setDziedzinaOne(?string $dziedzina_one): static
     {
         $this->dziedzina_one = $dziedzina_one;
 
@@ -50,7 +50,7 @@ class Main
         return $this->dziedzina_two;
     }
 
-    public function setDziedzinaTwo(string $dziedzina_two): static
+    public function setDziedzinaTwo(?string $dziedzina_two): static
     {
         $this->dziedzina_two = $dziedzina_two;
 

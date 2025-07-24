@@ -38,9 +38,8 @@ class KontaktController extends AbstractController
     public function update(Request $request, EntityManagerInterface $manager, $id): Response
     {
         $kontakt = $manager->getRepository(Kontakt::class)->find($id);
-        if (!$kontakt) {
-            throw $this->createNotFoundException("Kontakt o ID $id nie istnieje.");
-        }
+
+
 
         if ($request->isMethod('POST')) {
             $kontakt->setNumerTel($request->request->get('numerTel'));
@@ -56,9 +55,16 @@ class KontaktController extends AbstractController
         ]);
     }
 
+
     #[Route('/kontakt_list', name: 'kontakt_option')]
-    public function option(): Response
+    public function option(EntityManagerInterface $manager): Response
     {
-        return $this->render('kontakt/optionKontakt.html.twig', []);
+        $kontakty = $manager->getRepository(Kontakt::class)->findAll();
+
+        return $this->render('kontakt/optionKontakt.html.twig', [
+            'kontakty' => $kontakty,
+        ]);
     }
+
+
 }

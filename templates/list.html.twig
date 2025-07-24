@@ -1,3 +1,6 @@
+
+
+
 <!DOCTYPE html>
 <html lang="pl">
 
@@ -21,8 +24,8 @@
             font-weight: 600;
             color: #444444;
             padding: 0.5rem 1rem;
-            transition: color 0.3s ease, background-color 0.3s ease;
             border-radius: 4px;
+            text-decoration: underline;
         }
 
         main.container {
@@ -31,26 +34,21 @@
             flex-grow: 1;
         }
 
-        h1 {
-            font-weight: 700;
-            margin-bottom: 2rem;
-            color: #222222;
-            text-shadow: none;
-        }
 
         .flex-elements {
             display: flex;
             justify-content: center;
             gap: 1.5rem;
             flex-wrap: wrap;
+
+            background: #e9f0fc;
+            border: 1px solid #0056b3;
+            padding: 1rem 2rem;
+            border-radius: 6px;
         }
 
         .flex-elements > div {
-            background: #ffffff;
-            border: 1px solid #dddddd;
-            padding: 1rem 1.5rem;
-            border-radius: 6px;
-            box-shadow: none;
+            background: transparent;
             min-width: 140px;
             display: flex;
             justify-content: center;
@@ -58,9 +56,9 @@
         }
 
         .flex-elements > div:hover {
-            background: #e9f0fc;
-            cursor: pointer;
-            border-color: #0056b3;
+            background: transparent;
+            cursor: default;
+            border-color: transparent;
         }
 
         footer.footer {
@@ -74,7 +72,6 @@
 
         footer.footer a {
             color: #0d6efd;
-            text-decoration: none;
             margin: 0 0.3rem;
         }
 
@@ -102,7 +99,7 @@
 <body>
 
 <main class="container text-center">
-    <h1>Elementy strony</h1>
+
 
     <div class="flex-elements">
         <div><a class="nav-link" href="{{ path('main_option') }}">Main</a></div>

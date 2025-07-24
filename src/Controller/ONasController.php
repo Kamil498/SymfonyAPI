@@ -36,9 +36,33 @@ class ONasController extends AbstractController
         ]);
     }
 
-    #[Route('/onas_option', name: 'onas_option')]
-    public function option(): Response
+    #[Route('/onas/update/{id}', name: 'onas_update')]
+    public function update(EntityManagerInterface $manager, Request $request, $id): Response
     {
-        return $this->render('onas/optionOnas.html.twig', []);
+        $onas = $manager->getRepository(ONas::class)->find($id);
+
+        if($request->isMethod('POST')) {
+            $onas->setTytul($request->request->get('tytul'));
+            $onas->setOpis($request->request->get('opis'));
+
+            $manager->persist($onas);
+            $manager->flush();
+        }
+        return $this->render('onas/onasUpdate.html.twig', [
+            'onas' => $onas
+        ]);
+    }
+
+
+
+    #[Route('/onas_option', name: 'onas_option')]
+    public function option(EntityManagerInterface $manager): Response
+    {
+
+        $onas = $manager->getRepository(ONas::class)->findAll();
+
+        return $this->render('onas/optionOnas.html.twig', [
+            'onas' => $onas,
+        ]);
     }
 }

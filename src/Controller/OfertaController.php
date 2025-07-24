@@ -31,9 +31,33 @@ class OfertaController extends AbstractController
         ]);
     }
 
-    #[Route('/oferta_option', name: 'oferta_option')]
-    public function ofertaOption(): Response
+    #[Route('/oferta/update/{id}', name: 'oferta_update')]
+    public function update(EntityManagerInterface $manager, Request $request, $id): Response
     {
-        return $this->render('oferta/optionOferta.html.twig', []);
+        $oferta = $manager->getRepository(Oferta::class)->find($id);
+
+        if($request->isMethod('POST')) {
+            $oferta->setTytul($request->get('tytul'));
+            $oferta->setOpis($request->get('opis'));
+
+            $manager->persist($oferta);
+            $manager->flush();
+        }
+
+        return $this->render('oferta/ofertaUpdate.html.twig', [
+            'oferta' => $oferta,
+        ]);
+
+    }
+
+
+    #[Route('/oferta_option', name: 'oferta_option')]
+    public function ofertaOption(EntityManagerInterface $manager): Response
+    {
+        $oferts = $manager->getRepository(Oferta::class)->findAll();
+
+        return $this->render('oferta/optionOferta.html.twig', [
+            'oferts' => $oferts,
+        ]);
     }
 }

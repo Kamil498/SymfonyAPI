@@ -1,10 +1,21 @@
-<html>
-<head>
-    <title>Kontakt</title>
-</head>
+{% extends 'base.html.twig' %}
 
-<body>
-<a href="{{ path('onas') }}">Dodaj</a>
+    {% block title %}Onas{% endblock %}
 
-</body>
-</html>
+
+{% block body %}
+    <a href="{{ path('list') }}">Wróć do strony głównej</a>
+    <a href="{{ path('onas') }}">Dodaj</a>
+
+    <h2>Lista "onas"</h2>
+    <ul class="list-group">
+        {% for onas in onas %}
+            <li class="list-group-item d-flex justify-content-between align-items-center">
+                {{ onas.tytul }}
+                <a href="{{ path('onas_update', {'id': onas.id}) }}">Zmień</a>
+            </li>
+        {% endfor %}
+    </ul>
+
+{% endblock %}
+

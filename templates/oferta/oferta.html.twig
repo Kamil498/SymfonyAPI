@@ -1,23 +1,30 @@
-<html>
-<head>
-    <title>Oferta</title>
-</head>
+{% extends 'base.html.twig' %}
 
-<body>
+{% block title %}Dodaj do sekcji Oferta{% endblock %}
 
-<h1>Dodaj do sekcji "oferta"</h1>
+{% block body %}
+<main class="container">
+    <h1 class="mb-4 text-center fw-bold">Dodaj do sekcji „Oferta”</h1>
 
     <form method="post" action="{{ path('oferta') }}">
+        <div class="mb-3">
+            <label for="tytul" class="form-label">Tytuł</label>
+            <input name="tytul" type="text" id="tytul" class="form-control" required>
+        </div>
 
-        <br><label for="tytul">Tytuł</label>
-        <br><input name="tytul" type="text" required>
+        <div class="mb-4">
+            <label for="opis" class="form-label">Opis</label>
+            <textarea name="opis" id="opis" class="form-control" rows="5" required></textarea>
+        </div>
 
-        <br><label for="opis">Opis</label>
-        <br><textarea name="opis" required></textarea>
-
-        <br><button type="submit">Dodaj</button>
-        <br><button type="button" ><a href="{{ path('list') }}"> Wróć</a></button>
-
+        <button type="submit" class="btn btn-primary w-100">Dodaj</button>
     </form>
-</body>
-</html>
+
+    <p class="mt-3 text-center">
+        <a href="{{ path('oferta_option') }}" class="btn btn-secondary">Wróć do listy "Oferta"</a>
+        <a href="{{ path('list') }}" class="btn btn-secondary">Wróć do strony głównej</a>
+    </p>
+</main>
+
+{% endblock %}
+

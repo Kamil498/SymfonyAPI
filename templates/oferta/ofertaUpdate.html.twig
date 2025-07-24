@@ -1,0 +1,29 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Edycja ofert{% endblock %}
+
+{% block body %}
+    <main class="container">
+        <h1 class="mb-4 text-center fw-bold">Zmień dane w sekcji "Oferta"</h1>
+
+        <form method="post" action="{{ path('oferta_update', {'id': oferta.id}) }}" enctype="multipart/form-data">
+
+            <div class="mb-3">
+                <label for="tytul" class="form-label">Tytuł</label>
+                <input name="tytul" type="text" class="form-control" id="tytul" required value="{{ oferta.tytul }}">
+            </div>
+
+            <div class="mb-3">
+                <label for="opis" class="form-label">Opis</label>
+                <textarea name="opis" class="form-control" id="opis" required>{{ oferta.opis }}</textarea>
+            </div>
+
+            <button type="submit" class="btn btn-primary w-100">Zmień</button>
+        </form>
+
+        <p class="mt-3 text-center">
+            <a href="{{ path('oferta_option') }}" class="btn btn-secondary">Wróć do listy "Ofert"</a>
+            <a href="{{ path('list') }}" class="btn btn-secondary">Wróć do strony głównej</a>
+        </p>
+    </main>
+{% endblock %}

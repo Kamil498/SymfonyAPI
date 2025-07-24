@@ -1,10 +1,21 @@
-<html>
-<head>
-    <title>Kontakt</title>
-</head>
+{% extends 'base.html.twig' %}
 
-<body>
-<a href="{{ path('oferta') }}">Dodaj</a>
+    {% block title %}Oferta{% endblock %}
 
-</body>
-</html>
+
+{% block body %}
+    <a href="{{ path('list') }}">Wróć do strony głównej</a>
+    <a href="{{ path('oferta') }}">Dodaj</a>
+
+    <h2>Lista ofert</h2>
+    <ul class="list-group">
+        {% for oferta in oferts %}
+        <li class="list-group-item d-flex justify-content-between align-items-center">
+            {{ oferta.tytul }}
+            <a href="{{ path('oferta_update', {'id': oferta.id}) }}">Zmień</a>
+        </li>
+        {% endfor %}
+    </ul>
+
+{% endblock %}
+
