@@ -8,6 +8,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Serializer\SerializerInterface;
 
 class KontaktController extends AbstractController
 {
@@ -64,6 +65,25 @@ class KontaktController extends AbstractController
         return $this->render('kontakt/optionKontakt.html.twig', [
             'kontakty' => $kontakty,
         ]);
+    }
+
+    #[Route('/api/kontakt/list', name: 'kontakt_list', methods: ['GET'])]
+    public function list(EntityManagerInterface $manager, SerializerInterface $serializer): Response
+    {
+        $kontakt = $manager->getRepository(Kontakt::class)->findAll();
+
+        $data = $serializer->normalize($kontakt);
+        return $this->json($data);
+    }
+
+
+    #[Route('/api/kontakt/{id}', name: 'kontakt_id', methods: ['GET'])]
+    public function show(EntityManagerInterface $manager,SerializerInterface $serializer,  $id): Response
+    {
+        $kontakt = $manager->getRepository(Kontakt::class)->find($id);
+
+        $data = $serializer->normalize($kontakt);
+        return $this->json($data);
     }
 
 

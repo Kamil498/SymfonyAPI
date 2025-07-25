@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Order;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Mailer\MailerInterface;
@@ -72,8 +73,19 @@ class OrderController extends AbstractController
     }
 
 
+    #[Route('/api/zlecenie/list', name: 'zlecenie_list', methods: ['GET'])]
+    public function list(EntityManagerInterface $manager, SerializerInterface $serializer): JsonResponse
+    {
+        $zlecenie = $manager->getRepository(Order::class)->findAll();
+
+        $data = $serializer->normalize($zlecenie);
+        return $this->json($data);
+    }
+
+
+
     #[Route('/api/zlecenie/{id}', name: 'zlecenie_id', methods: ['GET'])]
-    public function zlecenieId(EntityManagerInterface $manager, SerializerInterface $serializer, $id): Response
+    public function zlecenieId(EntityManagerInterface $manager, SerializerInterface $serializer, $id): JsonResponse
     {
         $zlecenia = $manager->getRepository(Order::class)->find($id);
 
@@ -85,9 +97,20 @@ class OrderController extends AbstractController
 
 
     #[Route('/zlecenie/{id}', name: 'zlecenie_show')]
-    public function zlecenieShow($id, EntityManagerInterface $manager): Response
+    public function zlecenieShow($id, EntityManagerInterface $manager, Request $request): Response
     {
         $zlecenie = $manager->getRepository(Order::class)->find($id);
+
+        if($request->isMethod('POST')) {
+            $zlecenie->setImieNazwisko($request->get('imie_nazwisko'));
+            $zlecenie->setEmail($request->get('email'));
+            $zlecenie->setNumerTel($request->get('numer_tel'));
+            $zlecenie->setContent($request->get('content'));
+            $zlecenie->setStatus($request->get('status'));
+
+            $manager->persist($zlecenie);
+            $manager->flush();
+        }
 
 
         return $this->render('zlecenie/zlecenieShow.html.twig', [

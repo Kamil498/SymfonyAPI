@@ -8,6 +8,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Serializer\SerializerInterface;
 
 class ONasController extends AbstractController
 {
@@ -64,5 +65,23 @@ class ONasController extends AbstractController
         return $this->render('onas/optionOnas.html.twig', [
             'onas' => $onas,
         ]);
+    }
+
+    #[Route('/api/onas/list', name: 'onas_list', methods: ['GET'])]
+    public function list(EntityManagerInterface $manager, SerializerInterface $serializer): Response
+    {
+        $onas = $manager->getRepository(ONas::class)->findAll();
+
+        $data = $serializer->normalize($onas);
+        return $this->json($data);
+    }
+
+    #[Route('/api/onas/{id}', name: 'onas_id', methods: ['GET'])]
+    public function id(EntityManagerInterface $manager,SerializerInterface $serializer, $id): Response
+    {
+        $onas = $manager->getRepository(ONas::class)->find($id);
+
+        $data = $serializer->normalize($onas);
+        return $this->json($data);
     }
 }

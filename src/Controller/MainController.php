@@ -8,6 +8,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Serializer\SerializerInterface;
 
 class MainController extends AbstractController
 {
@@ -104,6 +105,15 @@ class MainController extends AbstractController
         return $this->render('main/optionMain.html.twig', [
             'main' => $main,
         ]);
+    }
+
+    #[Route('/api/main/list', name: 'main_list', methods: ['GET'])]
+    public function list(EntityManagerInterface $manager, SerializerInterface $serializer): Response
+    {
+        $main = $manager->getRepository(Main::class)->findAll();
+
+        $data = $serializer->normalize($main);
+        return $this->json($data);
     }
 
 }

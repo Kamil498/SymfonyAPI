@@ -1,20 +1,24 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Logowanie</title>
-</head>
+{% extends 'base.html.twig' %}
 
-<body>
-<h1>Logowanie</h1>
+{% block title %}Logowanie{% endblock %}
 
-<form method="post" action="{{ path('login') }}">
-    <label for="username">Login:</label>
-    <input type="text" name="username" required>
+{% block body %}
+    <main class="container py-4" style="max-width: 400px;">
 
-    <label for="password">Hasło:</label>
-    <input type="password" name="password" required>
+        <h1 class="mb-4 text-center fw-bold">Logowanie</h1>
 
-    <button type="submit">Zaloguj</button>
-</form>
-</body>
-</html>
+        <form method="post" action="{{ path('login') }}">
+            <div class="mb-3">
+                <label for="username" class="form-label">Login</label>
+                <input type="text" name="username" id="username" class="form-control" required autofocus>
+            </div>
+
+            <div class="mb-4">
+                <label for="password" class="form-label">Hasło</label>
+                <input type="password" name="password" id="password" class="form-control" required>
+            </div>
+
+            <button type="submit" class="btn btn-primary w-100">Zaloguj</button>
+        </form>
+    </main>
+{% endblock %}

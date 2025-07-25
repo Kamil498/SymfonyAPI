@@ -1,3 +1,4 @@
+
 html, body {
     height: 100%;
     margin: 0;
@@ -19,8 +20,6 @@ main.container {
     margin-left: auto;
     margin-right: auto;
 }
-
-/* Navi flex */
 
 .flex-elements {
     display: flex;
@@ -44,21 +43,22 @@ main.container {
 
 .nav-link {
     font-weight: 600;
-    color: #444444;
+    color: #203864;
     padding: 0.5rem 1rem;
     border-radius: 4px;
-    text-decoration: underline;
+    text-decoration: none;
+    transition: color 0.3s ease, background-color 0.3s ease;
 }
 
 .nav-link:hover,
 .nav-link:focus {
-    text-decoration: none;
+    color: #0a2a66;
+    background-color: #e1e8f7;
     cursor: pointer;
-    color: #0056b3;
+    outline: none;
 }
 
 /* Stopka */
-
 footer.footer {
     background-color: #000;
     color: #fff;
@@ -72,12 +72,14 @@ footer.footer a {
     color: #0d6efd;
     text-decoration: none;
     margin: 0 0.3rem;
+    transition: color 0.3s ease;
 }
 
 footer.footer a:hover,
 footer.footer a:focus {
     text-decoration: underline;
     color: #66b0ff;
+    outline: none;
 }
 
 footer.footer .contact-info a {

@@ -8,6 +8,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Serializer\SerializerInterface;
 
 class OfertaController extends AbstractController
 {
@@ -59,5 +60,23 @@ class OfertaController extends AbstractController
         return $this->render('oferta/optionOferta.html.twig', [
             'oferts' => $oferts,
         ]);
+    }
+
+    #[Route('/api/oferta/list', name: 'oferta_list', methods: ['GET'])]
+    public function list(EntityManagerInterface $manager, SerializerInterface $serializer): Response
+    {
+        $oferta = $manager->getRepository(Oferta::class)->findAll();
+
+        $data  = $serializer->normalize($oferta);
+        return $this->json($data);
+    }
+
+    #[Route('/api/oferta/{id}', name: 'main_id', methods: ['GET'])]
+    public function id(EntityManagerInterface $manager,SerializerInterface $serializer, $id): Response
+    {
+        $oferta = $manager->getRepository(Oferta::class)->find($id);
+
+        $data = $serializer->normalize($oferta);
+        return $this->json($data);
     }
 }
