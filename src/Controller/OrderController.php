@@ -10,6 +10,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Mime\Email;
+use Symfony\Component\Serializer\SerializerInterface;
 
 class OrderController extends AbstractController
 {
@@ -54,9 +55,45 @@ class OrderController extends AbstractController
 
         }
 
-        return $this->render('zlecenie/zlecenie.html.twig', [
+        return $this->render('zlecenie/optionZlecenie.html.twig', [
             'error' => $error,
         ]);
     }
+
+
+    #[Route('/zlecenie/list', name: 'zlecenie_option')]
+    public function zlecenieList(EntityManagerInterface $manager): Response
+    {
+        $zlecenie = $manager->getRepository(Order::class)->findAll();
+
+        return $this->render('zlecenie/optionZlecenie.html.twig', [
+            'zlecenie' => $zlecenie,
+        ]);
+    }
+
+
+    #[Route('/api/zlecenie/{id}', name: 'zlecenie_id', methods: ['GET'])]
+    public function zlecenieId(EntityManagerInterface $manager, SerializerInterface $serializer, $id): Response
+    {
+        $zlecenia = $manager->getRepository(Order::class)->find($id);
+
+        $data = $serializer->normalize($zlecenia);
+        return $this->json($data);
+
+    }
+
+
+
+    #[Route('/zlecenie/{id}', name: 'zlecenie_show')]
+    public function zlecenieShow($id, EntityManagerInterface $manager): Response
+    {
+        $zlecenie = $manager->getRepository(Order::class)->find($id);
+
+
+        return $this->render('zlecenie/zlecenieShow.html.twig', [
+            'zlecenie' => $zlecenie,
+        ]);
+    }
+
 
 }
