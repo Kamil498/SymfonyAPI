@@ -15,6 +15,9 @@ class LoginController extends AbstractController
     #[Route('/login', name: 'login')]
     public function login(Request $request, UserRepository $userRepository, SessionInterface $session): Response
     {
+        if ($session->has('user_id')) {
+            return $this->redirectToRoute('list');
+        }
         $error = null;
 
         if($request->isMethod('POST')){
@@ -23,7 +26,6 @@ class LoginController extends AbstractController
 
             $user = $userRepository->findOneBy(['username' => $username]);
             if($user && password_verify($password, $user->getPassword())) {
-
                 $session->set('user_id', $user->getId());
                 return $this->redirectToRoute('list');
             } else {
@@ -31,18 +33,23 @@ class LoginController extends AbstractController
             }
         }
         return $this->render('login.html.twig', [
-            'error' => $error
+            'error' => $error,
         ]);
     }
+
 
     #[Route('/list', name: 'list')]
     public function list(SessionInterface $session): Response
     {
         if (!$session->has('user_id')) {
+            dump('Brak user_id w sesji');
             return $this->redirectToRoute('login');
         }
-
+        dump('User id w sesji:', $session->get('user_id'));
         return $this->render('list.html.twig');
     }
+
+
+
 
 }

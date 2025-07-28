@@ -1,24 +1,291 @@
-{% extends 'base.html.twig' %}
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{% block title %}Welcome!{% endblock %}</title>
 
-{% block title %}Zlecenia{% endblock %}
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous" />
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 128 128%22><text y=%221.2em%22 font-size=%2296%22>⚫️</text><text y=%221.3em%22 x=%220.2em%22 font-size=%2276%22 fill=%22%23fff%22>sf</text></svg>">
+    <link href="{{ asset('css/style.css') }}" rel="stylesheet" />
 
-{% block body %}
-<main class="container py-4">
-    <h2 class="mb-4 text-center fw-bold">Lista</h2>
+    <style>
+        html, body {
+            height: 100%;
+            margin: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f5f5f5;
+            color: #222222;
+        }
 
-    <ul class="list-group" style="max-width: 600px; margin: 0 auto;">
-        {% for zlecenie in zlecenie %}
+        body {
+            display: flex;
+            min-height: 100vh;
+            flex-direction: column;
+        }
 
-            <li class="list-group-item d-flex justify-content-between align-items-center">
-                {{ zlecenie.imieNazwisko }}
-                <a href="{{ path('zlecenie_show', {'id': zlecenie.id}) }}">Podgląd zlecenia</a>
+        /* MENU */
+        nav.sidebar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 220px;
+            height: 100vh;
+            background-color: #3a3a40;
+            color: #ccc;
+            display: flex;
+            flex-direction: column;
+            padding: 0.8rem 0;
+            box-shadow: 2px 0 5px rgba(0,0,0,0.3);
+            z-index: 10000;
+        }
+
+        nav.sidebar .logo {
+            margin-bottom: 1.5rem;
+            padding: 0 1rem;
+            text-align: center;
+        }
+
+        nav.sidebar .logo img {
+            max-width: 120px;
+            height: auto;
+            object-fit: contain;
+            cursor: pointer;
+        }
+
+        nav.sidebar ul.menu {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            flex-grow: 1;
+            overflow-y: auto;
+        }
+
+        nav.sidebar ul.menu li.menu-item {
+            margin-bottom: 0.35rem;
+        }
+
+        /* Ukrywamy checkboxy */
+        nav.sidebar ul.menu li.menu-item input[type="checkbox"] {
+            display: none;
+        }
+
+        /* Etykieta wyglądem przypomina button */
+        nav.sidebar ul.menu li.menu-item label.menu-button {
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: none;
+            border: none;
+            color: #ccc;
+            font-size: 1rem;
+            padding: 0.5rem 1.3rem;
+            text-align: left;
+            cursor: pointer;
+            border-radius: 0 16px 16px 0;
+            transition: background-color 0.3s, color 0.3s;
+            user-select: none;
+            outline-offset: 2px;
+        }
+
+        nav.sidebar ul.menu li.menu-item label.menu-button:hover,
+        nav.sidebar ul.menu li.menu-item label.menu-button:focus {
+            background-color: #56565d;
+            color: #fff;
+            outline: none;
+        }
+
+        /* Strzałka, domyślnie obrócona o 45deg */
+        nav.sidebar ul.menu li.menu-item label.menu-button .arrow {
+            border: solid #ccc;
+            border-width: 0 2px 2px 0;
+            display: inline-block;
+            padding: 4px;
+            margin-left: 6px;
+            transform: rotate(45deg);
+            transition: transform 0.3s ease, border-color 0.3s ease;
+        }
+
+        /* Gdy checkbox jest zaznaczony rotujemy strzałkę i zmieniamy kolor */
+        nav.sidebar ul.menu li.menu-item input[type="checkbox"]:checked + label.menu-button .arrow {
+            transform: rotate(-135deg);
+            border-color: #fff;
+        }
+
+        /* submenu ukryte */
+        nav.sidebar ul.submenu {
+            list-style: none;
+            padding-left: 1.8rem;
+            margin: 0.25rem 0 0 0;
+            max-height: 0;
+            overflow: hidden;
+            /* Usunięte transition dla natychmiastowego rozwijania */
+            color: #aaa;
+        }
+
+        /* submenu rozwinięte gdy checkbox zaznaczony */
+        nav.sidebar ul.menu li.menu-item input[type="checkbox"]:checked ~ ul.submenu {
+            max-height: 500px; /* wystarczająco duża, żeby pomieścić submenu */
+            padding-top: 0.15rem;
+            padding-bottom: 0.2rem;
+            color: #ddd;
+        }
+
+        nav.sidebar ul.submenu li a {
+            display: block;
+            padding: 0.3rem 0;
+            color: #aaa;
+            text-decoration: none;
+            border-radius: 3px;
+            transition: color 0.3s, background-color 0.3s;
+        }
+
+        nav.sidebar ul.submenu li a:hover,
+        nav.sidebar ul.submenu li a:focus {
+            background-color: transparent;
+            color: #fff;
+            outline: none;
+        }
+
+        main {
+            margin-left: 220px;
+            padding: 1.5rem 1rem;
+            flex-grow: 1;
+            min-height: calc(100vh - 80px);
+            background-color: #fff;
+        }
+
+        /* STOPKA */
+        footer.footer {
+            background-color: #000;
+            color: #fff;
+            padding: 1.5rem 1rem;
+            font-size: 0.9rem;
+            line-height: 1.5;
+            text-align: center;
+        }
+
+        footer.footer a {
+            color: #0d6efd;
+            text-decoration: none;
+            margin: 0 0.35rem;
+            transition: color 0.3s ease;
+        }
+
+        footer.footer a:hover,
+        footer.footer a:focus {
+            text-decoration: underline;
+            color: #66b0ff;
+            outline: none;
+        }
+
+        footer.footer .contact-info a {
+            display: inline-block;
+            margin: 0 0.5rem;
+        }
+
+        footer.footer .location {
+            margin: 0.5rem 0;
+        }
+
+        footer.footer .links {
+            margin: 0.8rem 0;
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <nav class="sidebar" aria-label="Menu nawigacyjne">
+        <div class="logo">
+            <img src="{{ asset('logo.png') }}" alt="Logo GPU Solutions" />
+        </div>
+        <ul class="menu">
+
+            <li class="menu-item">
+                <input type="checkbox" id="menu-main" />
+                <label for="menu-main" class="menu-button">
+                    Main <span class="arrow"></span>
+                </label>
+                <ul class="submenu" id="submenu-main" role="region" aria-labelledby="menu-main">
+                    <li><a href="{{ path('main_option') }}">List</a></li>
+                    <li><a href="{{ path('main') }}">Create</a></li>
+                </ul>
             </li>
-        {% endfor %}
-    </ul>
-    <p class="mt-3 text-center">
-        <a href="{{ path('zlecenie') }}" class="btn btn-primary">Dodaj nowe zlecenie</a>
-        <a href="{{ path('list') }}" class="btn btn-secondary">Wróć do strony głównej</a>
-    </p>
+
+            <li class="menu-item">
+                <input type="checkbox" id="menu-onas" />
+                <label for="menu-onas" class="menu-button">
+                    O nas <span class="arrow"></span>
+                </label>
+                <ul class="submenu" id="submenu-onas" role="region" aria-labelledby="menu-onas">
+                    <li><a href="{{ path('onas_option') }}">List</a></li>
+                    <li><a href="{{ path('onas') }}">Create</a></li>
+                </ul>
+            </li>
+
+            <li class="menu-item">
+                <input type="checkbox" id="menu-oferta" />
+                <label for="menu-oferta" class="menu-button">
+                    Oferta <span class="arrow"></span>
+                </label>
+                <ul class="submenu" id="submenu-oferta" role="region" aria-labelledby="menu-oferta">
+                    <li><a href="{{ path('oferta_option') }}">List</a></li>
+                    <li><a href="{{ path('oferta') }}">Create</a></li>
+                </ul>
+            </li>
+
+            <li class="menu-item">
+                <input type="checkbox" id="menu-kontakt" />
+                <label for="menu-kontakt" class="menu-button">
+                    Kontakt <span class="arrow"></span>
+                </label>
+                <ul class="submenu" id="submenu-kontakt" role="region" aria-labelledby="menu-kontakt">
+                    <li><a href="{{ path('kontakt_option') }}">List</a></li>
+                    <li><a href="{{ path('kontakt') }}">Create</a></li>
+                </ul>
+            </li>
+
+            <li class="menu-item">
+                <input type="checkbox" id="menu-zlecenie" />
+                <label for="menu-zlecenie" class="menu-button">
+                    Dodaj zlecenie <span class="arrow"></span>
+                </label>
+                <ul class="submenu" id="submenu-zlecenie" role="region" aria-labelledby="menu-zlecenie">
+                    <li><a href="{{ path('zlecenie_option') }}">List</a></li>
+                    <li><a href="{{ path('zlecenie') }}">Create</a></li>
+                </ul>
+            </li>
+
+        </ul>
+    </nav>
+</header>
+
+<main>
+    {% block body %}{% endblock %}
 </main>
 
-{% endblock %}
+<footer class="footer">
+    <p><strong>Tworzymy strony, które rozwiną Twój biznes</strong></p>
+
+    <p class="contact-info">
+        <a href="tel:+48782120445">782 120 445</a> |
+        <a href="mailto:kontakt@gpusolutions.pl">kontakt@gpusolutions.pl</a>
+    </p>
+
+    <p class="location">Łańcut/Rzeszów</p>
+
+    <p class="links">
+        <a href="https://www.gpusolutions.pl/#features" target="_blank" rel="noopener noreferrer">Usługi</a> |
+        <a href="https://www.gpusolutions.pl/#about" target="_blank" rel="noopener noreferrer">O nas</a> |
+        <a href="https://www.gpusolutions.pl/#contact" target="_blank" rel="noopener noreferrer">Kontakt</a>
+    </p>
+
+    <p>© 2025 GPU Solutions</p>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
+
+</body>
+</html>
